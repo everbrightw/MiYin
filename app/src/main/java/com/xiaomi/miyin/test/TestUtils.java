@@ -2,8 +2,7 @@ package com.xiaomi.miyin.test;
 
 import android.util.Log;
 
-import com.xiaomi.miyin.apis.TestInterface;
-import com.xiaomi.miyin.model.User;
+import com.xiaomi.miyin.apis.IMiVibeApi;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -20,7 +19,7 @@ public class TestUtils {
     public static String TAG = "TestUtils";
 
     public static Retrofit retrofit;
-    public static TestInterface testInterface;
+    public static IMiVibeApi testInterface;
 
     public static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
     public static OkHttpClient client;
@@ -34,7 +33,7 @@ public class TestUtils {
                 .client(client)
                 .build();
 
-        testInterface = retrofit.create(TestInterface.class);
+        testInterface = retrofit.create(IMiVibeApi.class);
     }
 
     /**
@@ -67,33 +66,32 @@ public class TestUtils {
     /**
      * Test for registering user
      */
-    public static void testRegister(){
-        UserTest userTest = new UserTest("test2323@xiaomi.com", "12324526");
-        Call<User> call = testInterface.userRegister(userTest);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(!response.isSuccessful()){
-                    Log.i(TAG, "fail register user");
-                    Log.i(TAG, "code: " + response.code() + "\n message:" + response.message() + " red: " + response.headers().get("location"));
-                    return;
-                }
+    //public static void testRegister(){
+    //    UserTest userTest = new UserTest("5333", "12324526");
+    //    Call<UserTest> call = testInterface.userRegister("111", "222");
+    //    call.enqueue(new Callback<UserTest>() {
+    //        @Override
+    //        public void onResponse(Call<UserTest> call, Response<UserTest> response) {
+    //            if(!response.isSuccessful()){
+    //                Log.i(TAG, "fail register user");
+    //                Log.i(TAG, "code: " + response.code() + "\n message:" + response.message() + " red: " + response.headers().get("location"));
+    //                return;
+    //            }
 
-                User userRegisterResponse = response.body();
-                String content = "";
-                content += "status_code: " + userRegisterResponse.getStatusCode() + "\n";
-                content += "status_msg: " + userRegisterResponse.getStatusMessage() + "\n";
-                content += "token: " + userRegisterResponse.getToken() + "\n";
-                content += "userid: " + userRegisterResponse.getId() + "\n";
-                Log.i(TAG, "\n ===== register response =====: \n" + content);
-            }
+    //            UserTest userRegisterResponse = response.body();
+    //            String content = "";
+    //            content += "status_code: " + userRegisterResponse.getStatusCode() + "\n";
+    //            content += "status_msg: " + userRegisterResponse.getMessage() + "\n";
+    //            content += "user_id" + userRegisterResponse.getUserId() + "\n";
+    //            Log.i(TAG, "\n ===== register response =====: \n" + content);
+    //        }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.i(TAG, t.getMessage());
-            }
-        });
+    //        @Override
+    //        public void onFailure(Call<UserTest> call, Throwable t) {
+    //            Log.i(TAG, t.getMessage());
+    //        }
+    //    });
 
-    }
+    //}
 
 }

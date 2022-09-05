@@ -36,7 +36,6 @@ public class UploadPageFragment extends Fragment {
 
         // ======== API TEST =========
         //TestUtils.testApi();
-        TestUtils.testRegister();
         return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 

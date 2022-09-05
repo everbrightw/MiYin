@@ -17,6 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.xiaomi.miyin.R;
+import com.xiaomi.miyin.apis.ApiClient;
+import com.xiaomi.miyin.apis.IMiVibeApi;
+import com.xiaomi.miyin.model.User;
+import com.xiaomi.miyin.test.UserTest;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView signup;
     MaterialButton button;
     boolean success = true;
+
+    private static IMiVibeApi sMiVibeApi = ApiClient.getClient().create(IMiVibeApi.class);
 
     // signup dialog
     Dialog dialog;
@@ -54,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(success){
                     // user logged in
                     openMainPage();
+                    //for testing
+                    //signup("wangyusen111", "wangyusen11");
                 }
             }
         });
@@ -65,7 +77,36 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i(TAG, "sign up clicked, show signup page");
                 showSignUp();
+            }
+        });
 
+    }
+
+
+    private void signup(String username, String password){
+        final UserTest userTest = new UserTest(username, password);
+
+        Call<User> call = sMiVibeApi.userRegister(userTest.getUsername(), userTest.getPassword());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(!response.isSuccessful()){
+                    Log.i(TAG, "fail register user");
+                    Log.i(TAG, "code: " + response.code() + "\n message:" + response.message() + " red: " + response.headers().get("location"));
+                    return;
+                }
+
+                User userRegisterResponse = response.body();
+                String content = "";
+                content += "status_code: " + userRegisterResponse.getStatusCode() + "\n";
+                content += "status_msg: " + userRegisterResponse.getMessage() + "\n";
+                content += "user_id: " + userRegisterResponse.getUserId() + "\n";
+                Log.i(TAG, "\n ===== register response =====: \n" + content);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
             }
         });
 
@@ -107,7 +148,9 @@ public class LoginActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: this is where we have to send the rest client request
+                // TODO: this is where we have to send the signup request
+                signup("yusenw2@illinois.edu", "123456");
+
             }
         });
         dialog.show();

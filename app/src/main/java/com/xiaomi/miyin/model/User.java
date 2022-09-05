@@ -2,26 +2,49 @@ package com.xiaomi.miyin.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
-    @SerializedName("username")
-    private String username;
+    public static int SIGN_UP_SUCCESS = 0;
+    public static int SIGN_UP_EXISTED_USER = 1;
+    public static int LOGIN_SUCCESS = 0;
+    public static int LOGIN_FAILED = 1;
 
-    @SerializedName("password")
-    private String password;
+    String username, password;
 
+    // login & signup response
     @SerializedName("user_id")
-    private Integer id;
-
-    private String token;
-
-    @SerializedName("status_code")
-    private String statusCode;
+    private Integer userId;
 
     @SerializedName("status_msg")
-    private String statusMessage;
+    private String message;
 
-    public String getUserName() {
+    @SerializedName("status_code")
+    private Integer statusCode;
+
+    @SerializedName("token")
+    private String token;
+
+
+    List<Video> videos = new ArrayList<>();
+
+
+
+    public User(String userName, String password){
+        this.username = userName;
+        this.password = password;
+    }
+
+    /**
+     * User uploaded a video
+     */
+    public void addVideo(Video video){
+        videos.add(video);
+    }
+
+    public String getUsername() {
         return username;
     }
 
@@ -29,24 +52,24 @@ public class User {
         return password;
     }
 
-    public Integer getId() {
-        return id;
+    public List<Video> getVideos() {
+        return videos;
     }
 
     public String getToken() {
         return token;
     }
 
-    public String getStatusCode() {
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public String getStatusMessage() {
-        return statusMessage;
-    }
-
-    public User(String userName, String password){
-        this.username = userName;
-        this.password = password;
-    }
 }

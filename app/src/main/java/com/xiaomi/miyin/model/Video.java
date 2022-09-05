@@ -5,6 +5,7 @@ public class Video {
     private String title;
     private String description;
     private String url;
+    private int length; // in seconds ?
 
     public Video(String url, String title, String description){
         this.url = url;
@@ -35,4 +36,13 @@ public class Video {
     public String getUrl() {
         return url;
     }
+
+    public int getLength(){
+        return length;
+    }
+
+    public void setLength(int length){
+        this.length = length;
+    }
+
 }
