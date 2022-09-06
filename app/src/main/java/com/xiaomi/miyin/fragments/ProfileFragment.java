@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.xiaomi.miyin.activities.LoginActivity;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.adapters.ProfileFragmentAdapter;
+import com.xiaomi.miyin.controllers.UserManager;
 
 public class ProfileFragment extends Fragment {
 
@@ -40,6 +42,8 @@ public class ProfileFragment extends Fragment {
         tabLayout = view.findViewById(R.id.profile_tab_layout);
         viewPager2 = view.findViewById(R.id.profile_viewpager);
         avatar = view.findViewById(R.id.profile_avatar);
+
+        Log.i(" YW_TEST", "onCreated");
 
         profileFragmentAdapter = new ProfileFragmentAdapter(this);
         viewPager2.setAdapter(profileFragmentAdapter);
@@ -72,6 +76,10 @@ public class ProfileFragment extends Fragment {
 
         // ======== test opening log in============
         testLoginPage(avatar);
+        if(UserManager.userIsLoggedIn()){
+            TextView textView = view.findViewById(R.id.profile_name);
+            textView.setText(UserManager.getLoggedInUserName());
+        }
     }
 
     void testLoginPage(ImageView avatar){

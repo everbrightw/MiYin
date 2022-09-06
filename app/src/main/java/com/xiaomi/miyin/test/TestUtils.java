@@ -2,7 +2,15 @@ package com.xiaomi.miyin.test;
 
 import android.util.Log;
 
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.xiaomi.miyin.adapters.VideoAdapter;
+import com.xiaomi.miyin.apis.ApiClient;
 import com.xiaomi.miyin.apis.IMiVibeApi;
+import com.xiaomi.miyin.model.ResponseStatus;
+import com.xiaomi.miyin.model.Video;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -11,6 +19,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+
+/**
+ * Where all the magic happens and my test playground
+ */
 
 public class TestUtils {
 
@@ -63,35 +76,50 @@ public class TestUtils {
         });
     }
 
-    /**
-     * Test for registering user
-     */
-    //public static void testRegister(){
-    //    UserTest userTest = new UserTest("5333", "12324526");
-    //    Call<UserTest> call = testInterface.userRegister("111", "222");
-    //    call.enqueue(new Callback<UserTest>() {
-    //        @Override
-    //        public void onResponse(Call<UserTest> call, Response<UserTest> response) {
-    //            if(!response.isSuccessful()){
-    //                Log.i(TAG, "fail register user");
-    //                Log.i(TAG, "code: " + response.code() + "\n message:" + response.message() + " red: " + response.headers().get("location"));
-    //                return;
-    //            }
+    // this is where the logged in user's info should look like
+    final static String USER_ID = "328694676918341";
+    final static String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjMyODY5NDY3NjkxODM0MSwiZXhwIjoxNjYyOTg4OTgzLCJuYmYiOjE2NjIzODM5NDN9.R4DKgXQFqXYX3wGMQFsSAtklZ1h4y6-_ligv6I9rF9I";
 
-    //            UserTest userRegisterResponse = response.body();
-    //            String content = "";
-    //            content += "status_code: " + userRegisterResponse.getStatusCode() + "\n";
-    //            content += "status_msg: " + userRegisterResponse.getMessage() + "\n";
-    //            content += "user_id" + userRegisterResponse.getUserId() + "\n";
-    //            Log.i(TAG, "\n ===== register response =====: \n" + content);
-    //        }
+    public static void testFetchVideo(ViewPager2 viewPager2){
+        IMiVibeApi api = ApiClient.getVideoTestClient().create(IMiVibeApi.class);
+        Call<ResponseStatus> call = api.fetchFeedVideos(USER_ID, TOKEN);
+        call.enqueue(new Callback<ResponseStatus>() {
+            @Override
+            public void onResponse(Call<ResponseStatus> call, Response<ResponseStatus> response) {
+                if(!response.isSuccessful()){
+                    Log.i(TAG, "Failed fetch videos: " + response.code());
+                    return;
+                }
+                //success
+                ResponseStatus ret = response.body();
+                Log.i(TAG, ret.getStatusMsg() + " ==============SUCCESS===========");
+                List<Video> videos = ret.getVideos();
+                printVideo(videos);
+                viewPager2.setAdapter(new VideoAdapter(videos));
+            }
 
-    //        @Override
-    //        public void onFailure(Call<UserTest> call, Throwable t) {
-    //            Log.i(TAG, t.getMessage());
-    //        }
-    //    });
+            @Override
+            public void onFailure(Call<ResponseStatus> call, Throwable t) {
+                Log.i(TAG, t.getMessage());
+            }
+        });
+    }
 
-    //}
+    public static void printVideo(List<Video> videos){
+        Log.i(TAG, "========printing videos ========\n");
+        for (int i = 0; i < videos.size(); i++){
+            Log.i(TAG, "video: " + i + ": " + videos.get(i).getUrl() + "\n");
+            Log.i(TAG, "author: " + "user_id: " + videos.get(i).getUser().getUserId() + "username: " + videos.get(i).getUser().getAccountName());
+
+        }
+    }
+
+
+
+
+
+
+
+
 
 }

@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.adapters.VideoAdapter;
 import com.xiaomi.miyin.model.Video;
+import com.xiaomi.miyin.test.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +32,19 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager2 = getView().findViewById(R.id.viewpager);
-        videos = new ArrayList<>();
+        //videos = new ArrayList<>();
 
-        Video video1 = new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                "@usertest1", "okokokok");
-        videos.add(video1);
+        //Video video1 = new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        //        "@usertest1", "okokokok");
+        //videos.add(video1);
 
-        Video video2 = new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-                "@usertest2", "okokokokuiucthebestuiucthebestuiucthbestuiuctebtestuiucubtest");
-        videos.add(video2);
+        //Video video2 = new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        //        "@usertest2", "okokokokuiucthebestuiucthebestuiucthbestuiuctebtestuiucubtest");
+        //videos.add(video2);
 
-        viewPager2.setAdapter(new VideoAdapter(videos));
+        //viewPager2.setAdapter(new VideoAdapter(videos));
+
+        //TestUtils.testFetchVideo(viewPager2);
     }
 
     @Nullable

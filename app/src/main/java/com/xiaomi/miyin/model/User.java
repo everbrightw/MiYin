@@ -1,5 +1,6 @@
 package com.xiaomi.miyin.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -16,16 +17,33 @@ public class User {
 
     // login & signup response
     @SerializedName("user_id")
-    private Integer userId;
+    @Expose
+    private long userId;
 
     @SerializedName("status_msg")
+    @Expose
     private String message;
 
+    @SerializedName("name")
+    @Expose
+    private String name;
+
     @SerializedName("status_code")
+    @Expose
     private Integer statusCode;
 
     @SerializedName("token")
     private String token;
+
+    @SerializedName("follow_count")
+    @Expose
+    private Integer followCount;
+
+    private Integer followerCount;
+
+    @SerializedName("user_name")
+    @Expose
+    private String accountName;
 
 
     List<Video> videos = new ArrayList<>();
@@ -60,7 +78,7 @@ public class User {
         return token;
     }
 
-    public Integer getUserId() {
+    public long getUserId() {
         return userId;
     }
 
@@ -72,4 +90,19 @@ public class User {
         return statusCode;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getFollowCount() {
+        return followCount;
+    }
+
+    public Integer getFollowerCount() {
+        return followerCount;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
 }
