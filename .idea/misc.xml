@@ -31,6 +31,7 @@
         <entry key="app/src/main/res/layout/fragment_2.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.40260416666666665" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_upload.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.4036458333333333" />
@@ -40,6 +41,7 @@
         <entry key="app/src/main/res/layout/profile_fragment.xml" value="0.40260416666666665" />
         <entry key="app/src/main/res/layout/profile_uploads_fragment.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/upload_fragment.xml" value="0.33242753623188404" />
+        <entry key="app/src/main/res/layout/upload_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/video_container.xml" value="0.45" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/deafult_userimage.xml" value="0.225" />

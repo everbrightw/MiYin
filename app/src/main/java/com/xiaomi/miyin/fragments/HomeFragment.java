@@ -34,17 +34,18 @@ public class HomeFragment extends Fragment {
         viewPager2 = getView().findViewById(R.id.viewpager);
         //videos = new ArrayList<>();
 
-        //Video video1 = new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        //Video video1 = new Video("http://10.235.120.209:7310/file/SampleVideo_720x480_30mb.mp4",
         //        "@usertest1", "okokokok");
         //videos.add(video1);
 
-        //Video video2 = new Video("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        //Video video2 = new Video("http://10.235.120.209:7310/file/SampleVideo_720x480_30mb.mp4",
         //        "@usertest2", "okokokokuiucthebestuiucthebestuiucthbestuiuctebtestuiucubtest");
         //videos.add(video2);
 
         //viewPager2.setAdapter(new VideoAdapter(videos));
 
-        //TestUtils.testFetchVideo(viewPager2);
+
+        TestUtils.testFetchVideo(viewPager2);
     }
 
     @Nullable
