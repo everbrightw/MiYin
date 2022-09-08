@@ -40,6 +40,7 @@ import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.apis.ApiClient;
 import com.xiaomi.miyin.apis.IMiVibeApi;
 import com.xiaomi.miyin.test.TestUtils;
+import com.xiaomi.miyin.utils.PermissionUtils;
 
 import java.io.File;
 
@@ -88,6 +89,13 @@ public class UploadPageFragment extends Fragment {
         //// open camera
         //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //startActivityForResult(intent, 100);
+        if(!PermissionUtils.checkPermissionForReadExternalStorage(getActivity())){
+            try {
+                PermissionUtils.requestPermissionForReadExternalStorage(getActivity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         button = (Button) view.findViewById(R.id.pickVideo);
         uploadVideo = (Button) view.findViewById(R.id.uploadVideo);
         context = view.getContext();

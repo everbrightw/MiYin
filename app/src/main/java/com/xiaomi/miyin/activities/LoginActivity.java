@@ -3,31 +3,27 @@ package com.xiaomi.miyin.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.xiaomi.miyin.R;
-import com.xiaomi.miyin.apis.ApiClient;
-import com.xiaomi.miyin.apis.IMiVibeApi;
 import com.xiaomi.miyin.controllers.UserFlowController;
-import com.xiaomi.miyin.controllers.UserManager;
 import com.xiaomi.miyin.model.User;
-import com.xiaomi.miyin.test.TestUtils;
-import com.xiaomi.miyin.test.UserTest;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,13 +31,14 @@ public class LoginActivity extends AppCompatActivity {
     TextView username;
     TextView password;
     TextView signup;
-    MaterialButton button;
+    MaterialButton loginButton;
     boolean success = true;
     UserFlowController userFlowController;
 
     // signup dialog
     Dialog dialog;
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,13 +52,13 @@ public class LoginActivity extends AppCompatActivity {
 
         username = findViewById(R.id.username_input_box);
         password = findViewById(R.id.password_input_box);
-        button = findViewById(R.id.login_btn);
+        loginButton = findViewById(R.id.login_btn);
         signup = findViewById(R.id.signup_text);
 
         dialog = new Dialog(this);
         userFlowController = new UserFlowController(this, dialog);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "login button clicked, check credentials here");
@@ -82,6 +79,43 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "sign up clicked, show signup page");
                 showSignUp();
                 //TestUtils.testFetchVideo();
+            }
+        });
+
+        // TODO: refactor this
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // if the user fill in both of the input text, change the button color
+                changeButtonColorIfNeeded(loginButton, username, password);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        // TODO: refactor this
+        username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeButtonColorIfNeeded(loginButton, username, password);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -108,11 +142,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    EditText passwordEditText, userNameEditText;
+
     void showSignUp(){
         dialog.setContentView(R.layout.popup_singup);
 
-        EditText passwordEditText = dialog.findViewById(R.id.password_signup_input_box);
-        EditText userNameEditText = dialog.findViewById(R.id.username_signup_input_box);
+        passwordEditText = dialog.findViewById(R.id.password_signup_input_box);
+        userNameEditText = dialog.findViewById(R.id.username_signup_input_box);
         TextView close = dialog.findViewById(R.id.popup_close_btn);
         MaterialButton signupButton = dialog.findViewById(R.id.signup_btn);
 
@@ -133,7 +169,56 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        // TODO: refactor this
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeButtonColorIfNeeded(signupButton, userNameEditText, passwordEditText);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        // TODO: refactor this
+        userNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeButtonColorIfNeeded(signupButton, userNameEditText, passwordEditText);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         dialog.show();
+    }
+
+    private void changeButtonColorIfNeeded(Button button, TextView userText, TextView passwordText){
+        if(userText.getText().toString().equals("")
+                || passwordText.getText().toString().equals("") ){
+            // format illegal, change the color to grey
+            button.setClickable(false);
+            button.setBackgroundColor(getColor(R.color.grey_background));
+        } else {
+            // legal login formt, change the color to orange.
+            button.setClickable(true);
+            button.setBackgroundColor(getColor(R.color.xiaomi_background));
+        }
     }
 
 }

@@ -17,8 +17,20 @@ import retrofit2.http.Query;
 
 public interface IMiVibeApi {
 
+
+    /**
+     * Test ping
+     * @return
+     */
     @GET("/test")
     Call<Test> getResponse();
+
+    /**
+     * User register
+     * @param username
+     * @param password
+     * @return
+     */
 
     @POST("miyin/user/register/")
     Call<ResponseStatus> userRegister(
@@ -26,18 +38,38 @@ public interface IMiVibeApi {
             @Query("password") String password
     );
 
+
+    /**
+     * User log in
+     * @param username
+     * @param password
+     * @return
+     */
     @POST("miyin/user/login/")
     Call<ResponseStatus> userLogin(
             @Query("username") String username, 
             @Query("password") String password
     );
 
+
+    /**
+     * Fetch all uploaded videos from the server
+     * @param userId
+     * @param token
+     * @return
+     */
     @GET("miyin/feed/")
     Call<ResponseStatus> fetchFeedVideos(
         @Query("user_id") String userId,
         @Query("token") String token
     );
 
+    /**
+     * Publish a user selected video
+     * @param token
+     * @param video
+     * @return
+     */
     @Multipart
     @POST("miyin/publish/action/")
     Call<ResponseBody> uploadVideo(

@@ -124,6 +124,7 @@ public class UserFlowController implements View.OnClickListener{
         @Override
         public void onFailure(Call<ResponseStatus> call, Throwable t) {
             Toast.makeText(context, "Error connecting to the server", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "error: " + t.getMessage());
         }
     }
 
@@ -161,6 +162,7 @@ public class UserFlowController implements View.OnClickListener{
         @Override
         public void onFailure(Call<ResponseStatus> call, Throwable t) {
             Toast.makeText(context, "Error connecting to the server", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "error: " + t.getMessage());
         }
     }
 
