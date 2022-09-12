@@ -14,6 +14,7 @@ import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.fragments.HomeFragment;
 import com.xiaomi.miyin.fragments.ProfileFragment;
 import com.xiaomi.miyin.fragments.UploadPageFragment;
+import com.xiaomi.miyin.apis.ServiceCall;
 
 public class MainActivity extends AppCompatActivity {
 

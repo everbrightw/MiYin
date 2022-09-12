@@ -1,6 +1,7 @@
 package com.xiaomi.miyin.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.xiaomi.miyin.R;
 
 import java.util.List;
@@ -19,10 +21,10 @@ import java.util.List;
 public class ProfileGridViewAdapter extends RecyclerView.Adapter<ProfileGridViewAdapter.UploadedVideoGridViewHolder> {
 
     List<String> titles;
-    List<Integer> images;
+    List<String> images;
     Context context;
 
-    public ProfileGridViewAdapter(Context context, List<String> titles, List<Integer> images){
+    public ProfileGridViewAdapter(Context context, List<String> titles, List<String> images){
         this.context = context;
         this.titles = titles;
         this.images = images;
@@ -40,7 +42,7 @@ public class ProfileGridViewAdapter extends RecyclerView.Adapter<ProfileGridView
     @Override
     public void onBindViewHolder(@NonNull UploadedVideoGridViewHolder holder, int position) {
         holder.title.setText(titles.get(position));
-        holder.gridIcon.setImageResource(images.get(position));
+        Picasso.get().load(images.get(position)).into(holder.gridIcon);
     }
 
     @Override

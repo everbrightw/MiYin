@@ -1,10 +1,15 @@
 package com.xiaomi.miyin.controllers;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xiaomi.miyin.R;
@@ -36,18 +41,23 @@ public class UserFlowController implements View.OnClickListener{
         this.signUpPage = signUpPage;
     }
 
+    public UserFlowController(Context context){
+        this.context = context;
+    }
 
     public void setUser(User user){
         this.user = user;
     }
 
     public void signUp(User user){
+        setUser(user);
         Call<ResponseStatus> call = sMiVibeApi.userRegister(user.getUsername(), user.getPassword());
         call.enqueue(new SignUpResponseCallback(this));
     }
 
     public void login(User user){
         Log.i(TAG, user.getUsername() + user.getPassword());
+        setUser(user);
         Call<ResponseStatus> call = sMiVibeApi.userLogin(user.getUsername(), user.getPassword());
         call.enqueue(new LoginResponseCallback(this));
     }
@@ -107,12 +117,11 @@ public class UserFlowController implements View.OnClickListener{
             }
 
             ResponseStatus responseStatus = response.body();
-            Toast.makeText(context, "user has been registered" + responseStatus.getStatusCode()
+            Toast.makeText(context, "user registered" + responseStatus.getStatusCode()
                     + " user id: " + responseStatus.getUserId(), Toast.LENGTH_SHORT).show();
             if(responseStatus.getStatusCode() == 0){
                 // successfully signed up
                 // close the sign up page
-                userFlowController.closeSignupPage();
             }
             if(responseStatus.getStatusCode() == 1){
                 // user has been registered before
@@ -135,7 +144,6 @@ public class UserFlowController implements View.OnClickListener{
         LoginResponseCallback(UserFlowController userFlowController){
             this.userFlowController = userFlowController;
             this.context = userFlowController.getContext();
-
         }
 
         @Override
@@ -150,7 +158,20 @@ public class UserFlowController implements View.OnClickListener{
                 // successfully logged in
                 // close the login page
                 userFlowController.closeLoginPage();
-                UserManager.setLoggedInUser(userFlowController.user);
+
+                // saved the logged in user state
+
+                UserManager.setUserName(
+                        userFlowController.getContext(),
+                        userFlowController.user.getUsername()
+                );
+
+                UserManager.setToken(
+                        userFlowController.getContext(),
+                        responseStatus.getToken()
+                );
+                Log.i("TestUtils", "set token: " + responseStatus.getToken());
+
             }
             if(responseStatus.getStatusCode() == 1){
                 // username or password error
@@ -167,5 +188,38 @@ public class UserFlowController implements View.OnClickListener{
     }
 
 
+    // ====== utils functions ========
+    public static boolean inputBoxIsEmpty(TextView editText){
+        if(editText == null){
+            return false;
+        }
+        return editText.getText().toString().equals("");
+    }
+
+    public static void changeButtonColorIfNeeded(Context context, Button button,
+                                                TextView text1,
+                                                TextView text2,
+                                                TextView text3){
+        if(inputBoxIsEmpty(text1) || inputBoxIsEmpty(text2) || inputBoxIsEmpty(text3)){
+            //some is empty
+            button.setClickable(false);
+            button.setBackgroundColor(context.getColor(R.color.grey_background));
+        } else {
+            // legal login formt, change the color to orange.
+            button.setClickable(true);
+            button.setBackgroundColor(context.getColor(R.color.xiaomi_background));
+        }
+    }
+
+    public static void changeButtonColorIfNeeded(Context context, Button button,
+                                                 TextView text1,
+                                                 TextView text2){
+        changeButtonColorIfNeeded(context, button,text1, text2, null);
+    }
+
+    public static void dismissKeyboard(Activity activity){
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
 
 }

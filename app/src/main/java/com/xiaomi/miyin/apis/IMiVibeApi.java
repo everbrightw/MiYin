@@ -60,7 +60,6 @@ public interface IMiVibeApi {
      */
     @GET("miyin/feed/")
     Call<ResponseStatus> fetchFeedVideos(
-        @Query("user_id") String userId,
         @Query("token") String token
     );
 
@@ -75,6 +74,28 @@ public interface IMiVibeApi {
     Call<ResponseBody> uploadVideo(
             @Query("token") String token,
             @Part() MultipartBody.Part video
+    );
+
+    @POST("miyin/favorite/action/")
+    Call<ResponseStatus> likeAVideo(
+            @Query("token") String token,
+            @Query("video_id") String videoID,
+            @Query("action_type") String actionType
+    );
+
+    @GET("miyin/publish/list/")
+    Call<ResponseStatus> getPublishedVideos(
+        @Query("token") String token
+    );
+
+    @GET("miyin/user/")
+    Call<ResponseStatus> getUserInfo(
+        @Query("token") String token
+    );
+
+    @GET("miyin/favorite/list/")
+    Call<ResponseStatus> getLikedVideos(
+            @Query("token") String token
     );
 
 }

@@ -4,8 +4,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    public static final String BASE_URL = "http://10.235.50.5:50040/";
-    public static final String VIDEO_URL = "http://10.235.120.209:7310/";
+    //public static final String BASE_URL = "http://10.235.34.93:7310/";
+    //public static final String VIDEO_URL = "http://10.235.34.93:7310/";
+    public static final String BASE_URL = "http://10.239.225.45:7310/";
+    public static final String VIDEO_URL = "http://10.239.225.45:7310/";
     private static Retrofit retrofit = null;
     private static Retrofit videoRetrofit = null;
 

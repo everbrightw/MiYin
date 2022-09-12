@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.controllers.UserFlowController;
+import com.xiaomi.miyin.controllers.UserManager;
 import com.xiaomi.miyin.model.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(success){
                     // user logged in
                     userFlowController.login(new User(username.getText().toString(), password.getText().toString()));
+                    Log.i(TAG, "username: " + username.getText().toString());
                     //for testing
                     //signup("wangyusen111", "wangyusen11");
                 }
@@ -77,7 +79,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "sign up clicked, show signup page");
-                showSignUp();
+                //showSignUp();
+                Intent intent = new Intent(getBaseContext(), SignupActivity.class);
+                startActivity(intent);
                 //TestUtils.testFetchVideo();
             }
         });
@@ -127,14 +131,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if(getCurrentFocus() != null){
-            dismissKeyboard();
+            UserFlowController.dismissKeyboard(this);
         }
         return super.dispatchTouchEvent(ev);
-    }
-
-    void dismissKeyboard(){
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     void openMainPage(){
@@ -166,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
                 User user = new User(userNameEditText.getText().toString(), passwordEditText.getText().toString());
                 userFlowController.setUser(user);
                 userFlowController.signUp(user);
-
             }
         });
 
@@ -209,16 +207,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void changeButtonColorIfNeeded(Button button, TextView userText, TextView passwordText){
-        if(userText.getText().toString().equals("")
-                || passwordText.getText().toString().equals("") ){
-            // format illegal, change the color to grey
-            button.setClickable(false);
-            button.setBackgroundColor(getColor(R.color.grey_background));
-        } else {
-            // legal login formt, change the color to orange.
-            button.setClickable(true);
-            button.setBackgroundColor(getColor(R.color.xiaomi_background));
-        }
+        UserFlowController.changeButtonColorIfNeeded(this, button ,userText, passwordText);
     }
 
 }

@@ -3,12 +3,12 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home_menu"
-        android:title="Home"/>
+        android:title="首页"/>
     <item
         android:id="@+id/nav_upload"
         android:icon="@drawable/ic_upload" />
     <item
         android:id="@+id/nav_info"
         android:icon="@drawable/ic_info_menu"
-        android:title="Profile"/>
+        android:title="我的"/>
 </menu>

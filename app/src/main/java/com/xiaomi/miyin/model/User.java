@@ -15,25 +15,6 @@ public class User {
 
     String username, password;
 
-    // login & signup response
-    @SerializedName("user_id")
-    @Expose
-    private long userId;
-
-    @SerializedName("status_msg")
-    @Expose
-    private String message;
-
-    @SerializedName("name")
-    @Expose
-    private String name;
-
-    @SerializedName("status_code")
-    @Expose
-    private Integer statusCode;
-
-    @SerializedName("token")
-    private String token;
 
     @SerializedName("follow_count")
     @Expose
@@ -41,10 +22,17 @@ public class User {
 
     private Integer followerCount;
 
-    @SerializedName("user_name")
+    @SerializedName("username")
     @Expose
     private String accountName;
 
+    @SerializedName("user_image")
+    @Expose
+    private String userAvatar;
+
+    public String getUserAvatar(){
+        return userAvatar;
+    }
 
     List<Video> videos = new ArrayList<>();
 
@@ -74,25 +62,6 @@ public class User {
         return videos;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Integer getStatusCode() {
-        return statusCode;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     public Integer getFollowCount() {
         return followCount;

@@ -1,20 +1,12 @@
 package com.xiaomi.miyin.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.session.MediaSession;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.activity.result.ActivityResult;
@@ -34,12 +25,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.loader.content.CursorLoader;
 
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.apis.ApiClient;
 import com.xiaomi.miyin.apis.IMiVibeApi;
-import com.xiaomi.miyin.test.TestUtils;
+import com.xiaomi.miyin.controllers.UserManager;
 import com.xiaomi.miyin.utils.PermissionUtils;
 
 import java.io.File;
@@ -55,7 +45,7 @@ import retrofit2.Response;
 public class UploadPageFragment extends Fragment {
 
     ImageView imageView;
-    private Button button, uploadVideo;
+    private Button pickVideo;
     public static final int REQUEST_PICK_VIDEO = 3;
     public ProgressDialog pDialog;
     private VideoView mVideoView;
@@ -80,15 +70,7 @@ public class UploadPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //imageView = view.findViewById(R.id.camera_image_view);
 
-        //// request for camera permission
-        //if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-        //    ActivityCompat.requestPermissions(getActivity(), new String[]{
-        //            Manifest.permission.CAMERA
-        //    }, 100);
-        //}
-        //// open camera
-        //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //startActivityForResult(intent, 100);
+        // =========request for camera permission=============
         if(!PermissionUtils.checkPermissionForReadExternalStorage(getActivity())){
             try {
                 PermissionUtils.requestPermissionForReadExternalStorage(getActivity());
@@ -96,8 +78,7 @@ public class UploadPageFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        button = (Button) view.findViewById(R.id.pickVideo);
-        uploadVideo = (Button) view.findViewById(R.id.uploadVideo);
+        pickVideo = (Button) view.findViewById(R.id.pickVideo);
         context = view.getContext();
         init(view);
     }
@@ -105,31 +86,11 @@ public class UploadPageFragment extends Fragment {
 
     void init(View view){
 
-        uploadVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (video != null){
-                    //uploadFile();
-                }else{
-                    Toast.makeText(view.getContext(), "Please select a video", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        mVideoView = (VideoView) view.findViewById(R.id.test_videoview);
-        mBufferingTextView = (TextView) view.findViewById(R.id.buffering_textview);
-
-        //if (savedInstanceState != null) {
-        //    mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
-        //}
-
         // Set up the media controller widget and attach it to the video view.
         MediaController controller = new MediaController(view.getContext());
         controller.setMediaPlayer(mVideoView);
-        mVideoView.setMediaController(controller);
 
-
-        button.setOnClickListener(new View.OnClickListener() {
+        pickVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent pickVideoIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -172,7 +133,7 @@ public class UploadPageFragment extends Fragment {
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE, file);
         MultipartBody.Part vFile = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
         Call<ResponseBody> responseBodyCall = ApiClient.getVideoTestClient().create(IMiVibeApi.class)
-                .uploadVideo(TestUtils.TOKEN, vFile);
+                .uploadVideo(UserManager.getToken(context), vFile);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -194,52 +155,6 @@ public class UploadPageFragment extends Fragment {
         returnCursor.moveToFirst();
         String fileName = returnCursor.getString(nameColumnIndex);
         return fileName;
-    }
-
-    @SuppressLint("ObsoleteSdkInt")
-    public String getPathFromURI(Uri uri){
-        String realPath="";
-// SDK < API11
-        if (Build.VERSION.SDK_INT < 11) {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            @SuppressLint("Recycle") Cursor cursor = getActivity().getContentResolver().query(uri, proj, null, null, null);
-            int column_index = 0;
-            String result="";
-            if (cursor != null) {
-                column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                realPath=cursor.getString(column_index);
-            }
-        }
-        // SDK >= 11 && SDK < 19
-        else if (Build.VERSION.SDK_INT < 19){
-            String[] proj = { MediaStore.Images.Media.DATA };
-            CursorLoader cursorLoader = new CursorLoader(getActivity(), uri, proj, null, null, null);
-            Cursor cursor = cursorLoader.loadInBackground();
-            if(cursor != null){
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                realPath = cursor.getString(column_index);
-            }
-        }
-        // SDK > 19 (Android 4.4)
-        else{
-            String wholeID = DocumentsContract.getDocumentId(uri);
-            // Split at colon, use second item in the array
-            String id = wholeID.split(":")[1];
-            String[] column = { MediaStore.Images.Media.DATA };
-            // where id is equal to
-            String sel = MediaStore.Images.Media._ID + "=?";
-            Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{ id }, null);
-            int columnIndex = 0;
-            if (cursor != null) {
-                columnIndex = cursor.getColumnIndex(column[0]);
-                if (cursor.moveToFirst()) {
-                    realPath = cursor.getString(columnIndex);
-                }
-                cursor.close();
-            }
-        }
-        return realPath;
     }
 
 }

@@ -1,5 +1,8 @@
 package com.xiaomi.miyin.fragments;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.squareup.picasso.Picasso;
 import com.xiaomi.miyin.activities.LoginActivity;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.adapters.ProfileFragmentAdapter;
@@ -22,6 +27,7 @@ import com.xiaomi.miyin.controllers.UserManager;
 
 public class ProfileFragment extends Fragment {
 
+    private static final String TAG = "ProfilePage";
     TabLayout tabLayout;
     ViewPager2 viewPager2;
 
@@ -75,23 +81,64 @@ public class ProfileFragment extends Fragment {
         });
 
         // ======== test opening log in============
-        testLoginPage(avatar);
-        if(UserManager.userIsLoggedIn()){
-            TextView textView = view.findViewById(R.id.profile_name);
-            textView.setText(UserManager.getLoggedInUserName());
+        setUpAvatarClickListeners(avatar);
+        //if(!UserManager.getUserName(getContext()).equals("")){
+        TextView textView = view.findViewById(R.id.profile_name);
+        if(UserManager.isLoggedIn(getContext())){
+            textView.setText(UserManager.getUserName(getContext()));
+            Log.i(TAG, "username: " + UserManager.getUserName(getContext()));
+            // disable the logged in page when signed in
+            //avatar.setClickable(false);
+        } else {
+            textView.setText("点击头像登陆");
+            //avatar.setClickable(true);
         }
+
+        //TestUtils.testUserImage(getContext(), avatar);
+        Picasso.get()
+                .load("https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80").into(avatar);
+
     }
 
-    void testLoginPage(ImageView avatar){
+    void setUpAvatarClickListeners(ImageView avatar){
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i("YW_TEST", "avatar clicked");
                 // open a new activity
-                openLoginActivity();
+                if(UserManager.isLoggedIn(getContext())){
+                    showSignOutConfirmDialog(getContext());
+                } else {
+                    openLoginActivity();
+                }
             }
         });
     }
+
+    public void refreshPage(){
+        getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+    }
+
+    public void showSignOutConfirmDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
+        builder.setMessage("想要推出登录吗")
+                .setCancelable(false)
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        UserManager.signOut(context);
+                        Toast.makeText(context, "user signed out", Toast.LENGTH_SHORT).show();
+                        refreshPage();
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     void openLoginActivity(){
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);

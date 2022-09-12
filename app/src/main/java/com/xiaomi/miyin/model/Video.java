@@ -3,11 +3,13 @@ package com.xiaomi.miyin.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import kotlin.ExperimentalStdlibApi;
+
 public class Video {
 
-    @SerializedName("id")
+    @SerializedName("video_id")
     @Expose
-    private long id;
+    private long videoID;
 
     @SerializedName("favorite_count")
     @Expose
@@ -21,11 +23,16 @@ public class Video {
     @Expose
     private String url;
 
+    // wheather the current video should be displayed as favorite based on the current user
+    @SerializedName("is_favorite")
+    @Expose
+    private boolean isFavorite;
+
     private int length; // in seconds ?
 
-    @SerializedName("author")
-    @Expose
-    private User user;
+    //@SerializedName("author")
+    //@Expose
+    //private User user;
 
     @SerializedName("cover_url")
     private String coverUrl;
@@ -73,20 +80,24 @@ public class Video {
         this.length = length;
     }
 
-    public long getId() {
-        return id;
-    }
-
     public Integer getFavCount() {
         return favCount;
     }
 
-    public User getUser(){
-        return user;
-    }
+    //public User getUser(){
+    //    return user;
+    //}
 
     public String getCoverUrl(){
         return coverUrl;
+    }
+
+    public long getVideoID(){
+        return videoID;
+    }
+
+    public boolean isFavorite(){
+        return isFavorite;
     }
 
 }
