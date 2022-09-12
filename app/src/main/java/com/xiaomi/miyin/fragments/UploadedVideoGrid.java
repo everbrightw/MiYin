@@ -96,5 +96,6 @@ public class UploadedVideoGrid extends Fragment {
         // ******* API request for retrieving user uploaded video *******
         ServiceCall.retrieveUserPublishedVideos(getContext(), recyclerView);
         //recyclerView.setAdapter(adapter);
+        //test
     }
 }
