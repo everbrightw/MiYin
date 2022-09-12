@@ -42,7 +42,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         passwordConfirm = findViewById(R.id.password_confirm_box);
         signupButton = findViewById(R.id.signup_btn);
         userFlowController = new UserFlowController(this);
-
         signupButton.setOnClickListener(this);
 
         // listening for edit text box input change and update the button color

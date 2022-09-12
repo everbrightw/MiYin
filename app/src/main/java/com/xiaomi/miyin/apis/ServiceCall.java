@@ -115,7 +115,6 @@ public class ServiceCall {
     public final static String LIKE = "1";
     public final static String UNLIKE = "2";
 
-
     public static void retrieveFeedVideos(FragmentManager fragmentManager, ViewPager2 viewPager2,
                                           ProgressBar progressBar, LoadingView loadingView) {
         IMiVibeApi api = ApiClient.getVideoTestClient().create(IMiVibeApi.class);
@@ -133,6 +132,9 @@ public class ServiceCall {
                 ResponseStatus ret = response.body();
                 Log.i(TAG, ret.getStatusMsg() + " ==============SUCCESS===========");
                 List<Video> videos = ret.getVideos();
+                if(videos == null){
+                    return;
+                }
                 printVideo(videos);
                 VideoAdapter videoAdapter = new VideoAdapter(videos);
                 viewPager2.setAdapter(videoAdapter);

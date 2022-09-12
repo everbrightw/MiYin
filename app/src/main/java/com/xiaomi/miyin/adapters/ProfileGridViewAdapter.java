@@ -28,6 +28,7 @@ public class ProfileGridViewAdapter extends RecyclerView.Adapter<ProfileGridView
         this.context = context;
         this.titles = titles;
         this.images = images;
+
         Log.i("YW_TEST", "gridview adapter constructed");
     }
 
@@ -43,6 +44,17 @@ public class ProfileGridViewAdapter extends RecyclerView.Adapter<ProfileGridView
     public void onBindViewHolder(@NonNull UploadedVideoGridViewHolder holder, int position) {
         holder.title.setText(titles.get(position));
         Picasso.get().load(images.get(position)).into(holder.gridIcon);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // This is a hardcoded solution
+                if(position==0 && titles.get(position).equals("ADD")){
+                    Log.i("CLICK", "uiuc is the best");
+                    holder.title.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
     @Override

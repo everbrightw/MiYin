@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import com.xiaomi.miyin.activities.LoginActivity;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.adapters.ProfileFragmentAdapter;
+import com.xiaomi.miyin.apis.ServiceCall;
 import com.xiaomi.miyin.controllers.UserManager;
 
 public class ProfileFragment extends Fragment {
@@ -30,10 +31,8 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfilePage";
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-
     // user avatar
     ImageView avatar;
-
     ProfileFragmentAdapter profileFragmentAdapter;
 
     @Nullable
@@ -94,9 +93,7 @@ public class ProfileFragment extends Fragment {
             //avatar.setClickable(true);
         }
 
-        //TestUtils.testUserImage(getContext(), avatar);
-        Picasso.get()
-                .load("https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80").into(avatar);
+        ServiceCall.testUserImage(getContext(), avatar);
 
     }
 

@@ -15,7 +15,6 @@ public class User {
 
     String username, password;
 
-
     @SerializedName("follow_count")
     @Expose
     private Integer followCount;
@@ -30,13 +29,7 @@ public class User {
     @Expose
     private String userAvatar;
 
-    public String getUserAvatar(){
-        return userAvatar;
-    }
-
     List<Video> videos = new ArrayList<>();
-
-
 
     public User(String userName, String password){
         this.username = userName;
@@ -62,7 +55,6 @@ public class User {
         return videos;
     }
 
-
     public Integer getFollowCount() {
         return followCount;
     }
@@ -74,4 +66,9 @@ public class User {
     public String getAccountName() {
         return accountName;
     }
+
+    public String getUserAvatar(){
+        return userAvatar;
+    }
+
 }

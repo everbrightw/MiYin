@@ -45,45 +45,6 @@ public class UploadedVideoGrid extends Fragment {
 
         titles = new ArrayList<>();
         images = new ArrayList<>();
-
-        //titles.add("123");
-        //titles.add("456");
-        //titles.add("789");
-        //titles.add("102");
-        //titles.add("333");
-        //titles.add("333");
-        //titles.add("333");
-        //titles.add("333");
-        //titles.add("333");
-        //titles.add("333");
-        //titles.add("333");
-
-        //String testImage = "https://images.unsplash.com/photo-1597431824273-fd1ec691a0e7?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=800&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2Mjk1NjcwMg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1900https://images.unsplash.com/photo-1597431824273-fd1ec691a0e7?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=800&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY2Mjk1NjcwMg&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1900I";
-        //images.add(R.drawable.test_pic1);
-        //images.add(R.drawable.test_pic2);
-        //images.add(R.drawable.test_pic3);
-        //images.add(R.drawable.test_pic4);
-        //images.add(R.drawable.test5);
-        //images.add(R.drawable.test6);
-        //images.add(R.drawable.test7);
-        //images.add(R.drawable.test11);
-        //images.add(R.drawable.test9);
-        //images.add(R.drawable.test10);
-        //images.add(R.drawable.test11);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-        //images.add(testImage);
-
-
         adapter = new ProfileGridViewAdapter(getContext(), titles, images);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),
@@ -96,6 +57,5 @@ public class UploadedVideoGrid extends Fragment {
         // ******* API request for retrieving user uploaded video *******
         ServiceCall.retrieveUserPublishedVideos(getContext(), recyclerView);
         //recyclerView.setAdapter(adapter);
-        //test
     }
 }

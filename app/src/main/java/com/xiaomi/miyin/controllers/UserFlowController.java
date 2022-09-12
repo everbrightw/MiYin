@@ -187,7 +187,6 @@ public class UserFlowController implements View.OnClickListener{
         }
     }
 
-
     // ====== utils functions ========
     public static boolean inputBoxIsEmpty(TextView editText){
         if(editText == null){
@@ -217,6 +216,10 @@ public class UserFlowController implements View.OnClickListener{
         changeButtonColorIfNeeded(context, button,text1, text2, null);
     }
 
+    /**
+     * Dismiss keyboard on user touching other
+     * @param activity
+     */
     public static void dismissKeyboard(Activity activity){
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);

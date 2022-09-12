@@ -31,4 +31,5 @@ public class OfflineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         refreshBtn = getView().findViewById(R.id.refresh_btn);
     }
+
 }

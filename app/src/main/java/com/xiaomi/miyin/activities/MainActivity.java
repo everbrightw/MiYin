@@ -13,7 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.fragments.HomeFragment;
 import com.xiaomi.miyin.fragments.ProfileFragment;
-import com.xiaomi.miyin.fragments.UploadPageFragment;
 import com.xiaomi.miyin.apis.ServiceCall;
 
 public class MainActivity extends AppCompatActivity {
@@ -67,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_home:
                             selectedFragment = new HomeFragment();
                             break;
-                        case R.id.nav_upload:
-                            selectedFragment = new UploadPageFragment();
-                            //set up transition animation
-                            transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
-                            transaction.addToBackStack(null);
-                            break;
+                        //case R.id.nav_upload:
+                        //    selectedFragment = new UploadPageFragment();
+                        //    //set up transition animation
+                        //    transaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+                        //    transaction.addToBackStack(null);
+                        //    break;
                         case R.id.nav_info:
                             selectedFragment = new ProfileFragment();
                             break;

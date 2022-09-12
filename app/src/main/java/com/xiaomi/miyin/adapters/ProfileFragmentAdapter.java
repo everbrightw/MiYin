@@ -32,8 +32,6 @@ public class ProfileFragmentAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0:
-                return new UploadedVideoGrid();
             case 1:
                 return new FavoriteVideoGrid();
             default:

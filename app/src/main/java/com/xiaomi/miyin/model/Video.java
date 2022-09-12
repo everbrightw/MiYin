@@ -37,6 +37,9 @@ public class Video {
     @SerializedName("cover_url")
     private String coverUrl;
 
+    @SerializedName("image_url")
+    private String avatarUrl;
+
     public Video(String url, String title, String description){
         this.url = url;
         this.title = title;
@@ -98,6 +101,10 @@ public class Video {
 
     public boolean isFavorite(){
         return isFavorite;
+    }
+
+    public String getAvatarUrl(){
+        return avatarUrl;
     }
 
 }

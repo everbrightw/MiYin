@@ -1,8 +1,11 @@
 package com.xiaomi.miyin.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,8 +78,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         boolean isFavorite = false;
 
         ImageView likeBtn;
+        TextView favCount;
         // TODO: this one need to dynamically initialized
         boolean liked = false;
+        int count = 0;
 
         public VideoHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,6 +92,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
             progressBar = itemView.findViewById(R.id.videoProgressBar);
             likeBtn = itemView.findViewById(R.id.like_button);
             avatar = itemView.findViewById(R.id.profile_avatar);
+            favCount = itemView.findViewById(R.id.heart_count_textview);
 
             Picasso.get().load("https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80").into(avatar);
 
@@ -107,6 +117,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         void likeVideo(Context context){
             likeBtn.setImageDrawable(context.getDrawable(R.drawable.ic_solid_heart));
             postRequest(context, ServiceCall.LIKE);
+            favCount.setText("" + ++count);
+            favCount.invalidate();
         }
 
         void postRequest(Context context, String like){
@@ -122,7 +134,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
                     // update the favotie cache
                     isFavorite = like == ServiceCall.LIKE;
-
                     Log.i("FAV_VIDEO", "success favortie: " + response.body().getStatusMsg());
                 }
 
@@ -137,6 +148,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         void unLikeVideo(Context context){
             likeBtn.setImageDrawable(context.getDrawable(R.drawable.ic_heart));
             postRequest(context, ServiceCall.UNLIKE);
+            favCount.setText("" + --count);
+            favCount.invalidate();
         }
 
         @SuppressLint("UseCompatLoadingForDrawables")
@@ -144,6 +157,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
             videoView.setVideoPath(video.getUrl());
             title.setText(video.getTitle());
             description.setText(video.getDescription());
+            favCount.setText("" + video.getFavCount());
+            count = video.getFavCount();
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -166,6 +181,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
 
             likeBtn.setImageDrawable(!isFavorite ? itemView.getContext().getDrawable(R.drawable.ic_heart) :
                     itemView.getContext().getDrawable(R.drawable.ic_solid_heart));
+            Log.i("IMAGE", video.getAvatarUrl());
+            if(video.getAvatarUrl() !=null && !video.getAvatarUrl().equals("")){
+                Picasso.get().load(video.getAvatarUrl()).into(avatar);
+            }
         }
     }
 

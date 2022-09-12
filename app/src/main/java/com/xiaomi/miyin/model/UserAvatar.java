@@ -9,7 +9,6 @@ public class UserAvatar {
     @Expose
     private String userImage;
 
-
     public String getUserImage(){
         return userImage;
     }
