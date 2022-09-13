@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xiaomi.miyin.R;
+import com.xiaomi.miyin.activities.LoginActivity;
 import com.xiaomi.miyin.activities.MainActivity;
 import com.xiaomi.miyin.apis.ApiClient;
 import com.xiaomi.miyin.apis.IMiVibeApi;
@@ -117,13 +118,15 @@ public class UserFlowController implements View.OnClickListener{
             }
 
             ResponseStatus responseStatus = response.body();
-            Toast.makeText(context, "user registered" + responseStatus.getStatusCode()
-                    + " user id: " + responseStatus.getUserId(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "user registered" + responseStatus.getStatusCode()
+             //       + " user id: " + responseStatus.getUserId(), Toast.LENGTH_SHORT).show();
             if(responseStatus.getStatusCode() == 0){
                 // successfully signed up
                 // close the sign up page
+                Intent intent = new Intent(context, LoginActivity.class);
+                context.startActivity(intent);
             }
-            if(responseStatus.getStatusCode() == 1){
+            if(responseStatus.getStatusCode() == 10105){
                 // user has been registered before
                 Toast.makeText(context, "User has been registered before", Toast.LENGTH_SHORT).show();
             }
@@ -173,7 +176,7 @@ public class UserFlowController implements View.OnClickListener{
                 Log.i("TestUtils", "set token: " + responseStatus.getToken());
 
             }
-            if(responseStatus.getStatusCode() == 1){
+            if(responseStatus.getStatusCode() == 10101){
                 // username or password error
                 Toast.makeText(context, "Username does not exist or password is wrong", Toast.LENGTH_SHORT).show();
             }

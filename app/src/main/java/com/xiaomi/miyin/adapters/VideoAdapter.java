@@ -95,10 +95,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
                 @Override
                 public void onClick(View view) {
                     if(!isFavorite){
-                        Toast.makeText(itemView.getContext(), "Liked a video", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(itemView.getContext(), "Liked a video", Toast.LENGTH_SHORT).show();
                         likeVideo(itemView.getContext());
                     } else {
-                        Toast.makeText(itemView.getContext(), "un-liked a video", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(itemView.getContext(), "un-liked a video", Toast.LENGTH_SHORT).show();
                         unLikeVideo(itemView.getContext());
                     }
                     liked = !liked;

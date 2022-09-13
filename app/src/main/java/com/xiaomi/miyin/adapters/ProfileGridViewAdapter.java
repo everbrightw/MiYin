@@ -77,7 +77,7 @@ public class ProfileGridViewAdapter extends RecyclerView.Adapter<ProfileGridView
                 public void onClick(View view) {
                     // upload view onclicked
                     Log.i("YW_TEST", "clicked on uploaded video: " + getAdapterPosition());
-                    Toast.makeText(view.getContext(), "clicked on: " + getAdapterPosition(), Toast.LENGTH_SHORT);
+                    //Toast.makeText(view.getContext(), "clicked on: " + getAdapterPosition(), Toast.LENGTH_SHORT);
                 }
             });
         }

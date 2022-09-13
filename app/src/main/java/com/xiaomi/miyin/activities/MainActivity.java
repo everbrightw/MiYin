@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.xiaomi.miyin.R;
+import com.xiaomi.miyin.controllers.UserManager;
 import com.xiaomi.miyin.fragments.HomeFragment;
 import com.xiaomi.miyin.fragments.ProfileFragment;
 import com.xiaomi.miyin.apis.ServiceCall;
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListner);
 
+        if(!UserManager.isLoggedIn(this)){
+            SharedPreferences.Editor editor = UserManager.getSharedPreferences(this).edit();
+            editor.putString(UserManager.PREF_TOKEN, UserManager.ROOT_TOKEN).commit();
+        }
         //viewPager2 = findViewById(R.id.viewpager);
         //videos = new ArrayList<>();
 
