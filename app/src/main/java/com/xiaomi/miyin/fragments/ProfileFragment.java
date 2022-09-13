@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
-import com.squareup.picasso.Picasso;
 import com.xiaomi.miyin.activities.LoginActivity;
 import com.xiaomi.miyin.R;
 import com.xiaomi.miyin.adapters.ProfileFragmentAdapter;
@@ -93,7 +92,7 @@ public class ProfileFragment extends Fragment {
             //avatar.setClickable(true);
         }
 
-        ServiceCall.testUserImage(getContext(), avatar);
+        ServiceCall.fetchUserImage(getContext(), avatar);
 
     }
 
@@ -118,7 +117,7 @@ public class ProfileFragment extends Fragment {
 
     public void showSignOutConfirmDialog(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-        builder.setMessage("想要推出登录吗")
+        builder.setMessage("想要退出登录吗")
                 .setCancelable(false)
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

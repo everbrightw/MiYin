@@ -15,11 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -155,7 +150,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
         @SuppressLint("UseCompatLoadingForDrawables")
         void setData(Video video){
             videoView.setVideoPath(video.getUrl());
-            title.setText(video.getTitle());
+            title.setText("@" + video.getTitle());
             description.setText(video.getDescription());
             favCount.setText("" + video.getFavCount());
             count = video.getFavCount();
@@ -182,9 +177,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoHolder>
             likeBtn.setImageDrawable(!isFavorite ? itemView.getContext().getDrawable(R.drawable.ic_heart) :
                     itemView.getContext().getDrawable(R.drawable.ic_solid_heart));
             Log.i("IMAGE", video.getAvatarUrl());
-            if(video.getAvatarUrl() !=null && !video.getAvatarUrl().equals("")){
-                Picasso.get().load(video.getAvatarUrl()).into(avatar);
-            }
+            Picasso.get().load(video.getAvatarUrl()).into(avatar);
+
         }
     }
 

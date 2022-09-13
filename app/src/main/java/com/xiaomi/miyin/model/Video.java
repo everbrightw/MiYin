@@ -15,6 +15,7 @@ public class Video {
     @Expose
     private Integer favCount = 0;
 
+    @SerializedName("author_name")
     private String title;
 
     private String description;
@@ -47,8 +48,7 @@ public class Video {
     }
 
     public Video(){
-        this.title = "testtest";
-        this.description = "okokok";
+        this.description = "这是一个视频描述";
     }
 
     public void setDescription(String description) {

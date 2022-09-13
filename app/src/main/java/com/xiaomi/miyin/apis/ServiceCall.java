@@ -256,7 +256,7 @@ public class ServiceCall {
 
     }
 
-    public static void testUserImage(Context context, ImageView avatar){
+    public static void fetchUserImage(Context context, ImageView avatar){
         IMiVibeApi api = ApiClient.getVideoTestClient().create(IMiVibeApi.class);
         Call<ResponseStatus> call = api.getUserInfo(UserManager.getToken(context));
         Log.i(TAG, "token" + UserManager.getToken(context));
@@ -264,12 +264,14 @@ public class ServiceCall {
             @Override
             public void onResponse(Call<ResponseStatus> call, Response<ResponseStatus> response) {
                 if (!response.isSuccessful()) {
-                    Log.i(TAG, "Failed fetch videos: " + response.code());
+                    Log.i(TAG, "Failed get user avatar " + response.code());
                     return;
                 }
                 //success
                 ResponseStatus ret = response.body();
+                Log.i(TAG, ret.getUser().getUserImage());
                 Picasso.get().load(ret.getUser().getUserImage()).into(avatar);
+                //Picasso.get().load("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80").into(avatar);
             }
 
             @Override

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -32,6 +33,7 @@ import com.xiaomi.miyin.controllers.UserManager;
 import com.xiaomi.miyin.model.LoadingView;
 import com.xiaomi.miyin.model.Video;
 import com.xiaomi.miyin.apis.ServiceCall;
+import com.xiaomi.miyin.test.PathUtils;
 import com.xiaomi.miyin.utils.PermissionUtils;
 
 import java.io.File;
@@ -143,19 +145,25 @@ public class HomeFragment extends Fragment {
 
     // todo refactor this =
     public void uploadFile(Uri uri){
-        String test = "/storage/emulated/0/DCIM/ScreenRecorder/" + getNameFromContentUri(getActivity(), uri);
-        final File file = new File(test);
+        //String test = "/storage/emulated/0/DCIM/ScreenRecorder/" + getNameFromContentUri(getActivity(), uri);
+        Log.i("PATH", PathUtils.getPath(context, uri));
+        String absPath = PathUtils.getPath(context, uri);
+
+        final File file = new File(absPath);
         MediaType MEDIA_TYPE = MediaType.parse("video/mp4");
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE, file);
         MultipartBody.Part vFile = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
         Call<ResponseBody> responseBodyCall = ApiClient.getVideoTestClient().create(IMiVibeApi.class)
                 .uploadVideo(UserManager.getToken(context), vFile);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.i("YW_TEST","S");
                 ResponseBody rb = response.body();
                 Log.i("YW_TEST","code" + response.code());
+                if(response.isSuccessful()){
+                    Toast.makeText(context, "Upload Video Success", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
